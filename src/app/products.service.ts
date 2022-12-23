@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { from } from 'rxjs';
+import { BehaviorSubject, from, of, tap } from 'rxjs';
 import { Observable } from 'rxjs';
 
 export interface Product {
@@ -9,39 +9,28 @@ export interface Product {
   description: string;
 }
 
-export const products = [
-  {
-    id: 1,
-    name: 'Phone XL',
-    price: 799,
-    description: 'A large phone with one of the best screens',
-  },
-  {
-    id: 2,
-    name: 'Phone Mini',
-    price: 699,
-    description: 'A great phone with one of the best cameras',
-  },
-  {
-    id: 3,
-    name: 'Phone Standard',
-    price: 299,
-    description: '',
-  },
-];
-
-/*
-Copyright Google LLC. All Rights Reserved.
-Use of this source code is governed by an MIT-style license that
-can be found in the LICENSE file at https://angular.io/license
-*/
 @Injectable({
   providedIn: 'root',
 })
 export class ProductsService {
   constructor() {}
 
-  getProducts(): Observable<Product> {
-    return from(products);
+  product$ = new BehaviorSubject<Product[]>([]);
+
+  getProducts(): Observable<Product[]> {
+    return this.product$;
+  }
+
+  addProduct(product: Product) {
+    this.product$.next([...this.product$.value, product]);
+  }
+
+  delete(id: number) {
+    const idx = this.product$.value.findIndex((p) => p.id === id);
+    if (idx === -1) throw 'no existe el producto';
+    this.product$.next([
+      ...this.product$.value.slice(0, idx),
+      ...this.product$.value.slice(idx + 1),
+    ]);
   }
 }

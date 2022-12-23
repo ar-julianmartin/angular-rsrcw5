@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { Router } from '@angular/router';
 
 import { ProductsService } from '../products.service';
 
@@ -8,12 +9,16 @@ import { ProductsService } from '../products.service';
   styleUrls: ['./product-list.component.css'],
 })
 export class ProductListComponent {
-  constructor(private products: ProductsService) {}
+  constructor(private products: ProductsService, private router: Router) {}
 
   product$ = this.products.getProducts();
 
-  share() {
-    window.alert('The product has been shared!');
+  addProduct() {
+    this.router.navigate(['/product']);
+  }
+
+  deleteProduct() {
+    this.products.delete(4);
   }
 }
 

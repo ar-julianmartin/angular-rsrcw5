@@ -1,6 +1,9 @@
 <h2>Products</h2>
 <p>{{ product$ | async | json }}</p>
 
+<button (click)="addProduct()">Agregar</button>
+<button (click)="deleteProduct()">Delete</button>
+
 <!-- 
 Copyright Google LLC. All Rights Reserved.
 Use of this source code is governed by an MIT-style license that
